@@ -6,12 +6,12 @@ In this project:
 
 ## Features
 
-- [] Bulleted lists
-- [] Numbered lists
-- [] Quotes
-- [] Todos/Checklists
-- [] Dividers
-- [] Callouts
+- [ ] Bulleted lists
+- [ ] Numbered lists
+- [ ] Quotes
+- [ ] Todos/Checklists
+- [ ] Dividers
+- [ ] Callouts
 - [x] Code blocks
-- [] Hover toolbar
-- [] Keyboard shortucts
+- [ ] Hover toolbar
+- [ ] Keyboard shortucts
