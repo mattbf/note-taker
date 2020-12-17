@@ -12,6 +12,6 @@ In this project:
 - [] Todos/Checklists
 - [] Dividers
 - [] Callouts
-- [] Code blocks
+- [x] Code blocks
 - [] Hover toolbar
 - [] Keyboard shortucts
