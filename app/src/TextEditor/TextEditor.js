@@ -1,11 +1,14 @@
 // Import React dependencies.
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState, useCallback } from 'react'
 // Import the Slate editor factory.
-import { createEditor, Transforms } from 'slate'
+import { createEditor } from 'slate'
+import { Editor, Transforms } from 'slate'
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 
+//CUSTOM ELEMENTS
+import CodeBlock from './CustomElements/CodeBlock.js'
 
 const TextEditor = () => {
   const editor = useMemo(() => withReact(createEditor()), [])
@@ -21,13 +24,27 @@ const TextEditor = () => {
     if (!value) {
        //Transforms.deselect(editor);
        // or set selection to neutral state:
-       // editor.selection = { anchor: { path: [0,0], offset:0 }, focus: { path: [0,0], offset: 0 } }
-       Transforms.select(editor, {
-         anchor: { path: [0, 0], offset: 0 },
-         focus: { path: [0, 0], offset: 0 },
-       })
+       editor.selection = { anchor: { path: [0,0], offset:0 }, focus: { path: [0,0], offset: 0 } }
+       // Transforms.select(editor, {
+       //   anchor: { path: [0, 0], offset: 0 },
+       //   focus: { path: [0, 0], offset: 0 },
+       // })
+
     }
   }, [value]);
+
+  const renderElement = useCallback(props => {
+    switch (props.element.type) {
+      case 'code':
+        return <CodeBlock {...props} />
+      default:
+        return <DefaultElement {...props} />
+    }
+  }, [])
+
+  const DefaultElement = props => {
+    return <p {...props.attributes}>{props.children}</p>
+  }
 
   return (
     <Slate
@@ -35,19 +52,28 @@ const TextEditor = () => {
       value={value}
       onChange={newValue => setValue(newValue)}
     >
-      <Editable
-        onKeyDown={event => {
+    <Editable
+      renderElement={renderElement}
 
-          if (event.key === '&') {
-
-            // Prevent the ampersand character from being inserted.
+      onKeyDown={event => {
+        //transform text
+        if (event.key === '&') {
+          event.preventDefault()
+          editor.insertText('and')
+        }
+        //transfrom node block into code block
+        if (event.key === '`' && event.ctrlKey) {
+            // Prevent the "`" from being inserted by default.
             event.preventDefault()
-            // Execute the `insertText` method when the event occurs.
-            editor.insertText('and')
+            // Otherwise, set the currently selected blocks type to "code".
+            Transforms.setNodes(
+              editor,
+              { type: 'code' },
+              { match: n => Editor.isBlock(editor, n) }
+            )
           }
-        }}
-
-      />
+      }}
+    />
     </Slate>
   )
 }
