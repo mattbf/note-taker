@@ -53,12 +53,14 @@ const CustomEditor = {
 
 const TextEditor = () => {
   const editor = useMemo(() => withReact(createEditor()), [])
-  const [value, setValue] = useState([
-    {
-      type: 'paragraph',
-      children: [{ text: 'A line of text in a paragraph.' }],
-    },
-  ])
+  const [value, setValue] = useState(
+    JSON.parse(localStorage.getItem('content')) || [
+      {
+        type: 'paragraph',
+        children: [{ text: 'A line of text in a paragraph.' }],
+      },
+    ]
+  )
 
   //FOR RENDERING CUSTOM BLOCKS
   const DefaultElement = props => {
@@ -78,7 +80,17 @@ const TextEditor = () => {
   }, [])
 
   return (
-    <Slate editor={editor} value={value} onChange={value => setValue(value)}>
+    <Slate
+      editor={editor}
+      value={value}
+      onChange={value => {
+        setValue(value)
+
+        // Save the value to Local Storage.
+        const content = JSON.stringify(value)
+        localStorage.setItem('content', content)
+      }}
+    >
       <Editable
         renderElement={renderElement}
         renderLeaf={renderLeaf}

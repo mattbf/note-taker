@@ -13,6 +13,8 @@ In this project:
 - [ ] Dividers
 - [ ] Callouts
 - [x] Code blocks
+
+- [x] Saving to a DB
 - [ ] Hover toolbar
 - [ ] Keyboard shortcuts
   - Added bold formatting
