@@ -14,7 +14,7 @@ In this project:
   - [ ] Dividers
   - [ ] Callouts
   - [x] Code blocks
-  - [ ] Markdown conversion
+  - [x] Markdown conversion
 
   ### Extras
   - [x] Saving to a DB
@@ -22,4 +22,4 @@ In this project:
   - [ ] Keyboard shortcuts
     - Added bold formatting
     - Links
-  - [ ] UNDO / REDO
+  - [x] UNDO / REDO
