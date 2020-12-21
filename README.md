@@ -21,3 +21,5 @@ In this project:
   - [ ] Hover toolbar
   - [ ] Keyboard shortcuts
     - Added bold formatting
+    - Links
+  - [ ] UNDO / REDO
