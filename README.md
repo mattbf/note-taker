@@ -6,7 +6,7 @@ In this project:
 
 ## Features
 
-  ### formatting
+  ### Formatting
   - [ ] Bulleted lists
   - [ ] Numbered lists
   - [ ] Quotes
@@ -14,6 +14,7 @@ In this project:
   - [ ] Dividers
   - [ ] Callouts
   - [x] Code blocks
+  - [ ] Markdown conversion
 
   ### Extras
   - [x] Saving to a DB

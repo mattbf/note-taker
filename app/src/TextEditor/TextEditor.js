@@ -95,7 +95,9 @@ const TextEditor = () => {
         renderElement={renderElement}
         renderLeaf={renderLeaf}
         onKeyDown={event => {
+          console.log(event)
           let commandKey = event.ctrlKey || event.metaKey ? true : false
+          console.log(commandKey + " pressed " + event.key)
           if (!commandKey) {
             return
           }
