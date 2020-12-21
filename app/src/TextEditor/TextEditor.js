@@ -2,13 +2,14 @@
 import React, { useEffect, useMemo, useState, useCallback } from 'react'
 // Import the Slate editor factory.
 import { createEditor } from 'slate'
-import { Editor, Transforms } from 'slate'
+import { Editor, Transforms, Text } from 'slate'
 
 // Import the Slate components and React plugin.
 import { Slate, Editable, withReact } from 'slate-react'
 
 //CUSTOM ELEMENTS
-import CodeBlock from './CustomElements/CodeBlock.js'
+import { CodeBlock } from './CustomElements/CustomElements.js'
+import { Leaf } from './CustomLeaves/CustomLeaves.js'
 
 const TextEditor = () => {
   const editor = useMemo(() => withReact(createEditor()), [])
@@ -33,6 +34,7 @@ const TextEditor = () => {
     }
   }, [value]);
 
+  //FOR RENDERING CUSTOM BLOCKS
   const renderElement = useCallback(props => {
     switch (props.element.type) {
       case 'code':
@@ -40,6 +42,11 @@ const TextEditor = () => {
       default:
         return <DefaultElement {...props} />
     }
+  }, [])
+
+  //FOR RENDERING CUSTOM LEAVES
+  const renderLeaf = useCallback(props => {
+    return <Leaf {...props} />
   }, [])
 
   const DefaultElement = props => {
@@ -51,32 +58,51 @@ const TextEditor = () => {
       editor={editor}
       value={value}
       onChange={newValue => setValue(newValue)}
+
+      style={{border: 'solid', width: '100%', height: '100%'}}
     >
     <Editable
       renderElement={renderElement}
+      renderLeaf={renderLeaf}
 
       onKeyDown={event => {
-        //transform text
-        if (event.key === '&') {
-          event.preventDefault()
-          editor.insertText('and')
-        }
-        //transfrom node block into code block
-        if (event.key === '`' && event.ctrlKey) {
-          // Prevent the "`" from being inserted by default.
-          event.preventDefault()
-          // Determine whether any of the currently selected blocks are code blocks.
-            const [match] = Editor.nodes(editor, {
-              match: n => n.type === 'code',
-            })
-            // Toggle the block type depending on whether there's already a match.
-            Transforms.setNodes(
-              editor,
-              { type: match ? 'paragraph' : 'code' },
-              { match: n => Editor.isBlock(editor, n) }
-            )
-        }
-      }}
+          let commandKey = event.ctrlKey || event.metaKey ? true : false
+          if (!commandKey) {
+            return
+          } else {
+            console.log("command issued " + event.key)
+            switch (event.key) {
+              // When "`" is pressed, keep our existing code block logic.
+              case '`': {
+                event.preventDefault()
+                const [match] = Editor.nodes(editor, {
+                  match: n => n.type === 'code',
+                })
+                Transforms.setNodes(
+                  editor,
+                  { type: match ? 'paragraph' : 'code' },
+                  { match: n => Editor.isBlock(editor, n) }
+                )
+                break
+              }
+
+              // When "B" is pressed, bold the text in the selection.
+              case 'b': {
+                console.log("b pressed")
+                // Apply it to text nodes, and split the text node up if the
+                // selection is overlapping only part of it.
+                event.preventDefault()
+                Transforms.setNodes(
+                  editor,
+                  { bold: !editor.bold },
+                  { match: n => Text.isText(n), split: true }
+                )
+                break
+              }
+            }
+          }
+        }}
+
     />
     </Slate>
   )

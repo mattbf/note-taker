@@ -14,4 +14,5 @@ In this project:
 - [ ] Callouts
 - [x] Code blocks
 - [ ] Hover toolbar
-- [ ] Keyboard shortucts
+- [ ] Keyboard shortcuts
+  - Added bold formatting
