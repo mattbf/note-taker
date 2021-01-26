@@ -119,9 +119,10 @@ const TextEditor = () => {
   )
 
   const editor = useMemo(
-    () => withMarkdownShortcuts(withReact(withHistory(createEditor()))),
+    () => withReact(withHistory(createEditor())),
     []
   )
+  //withMarkdownShortcuts(withReact(withHistory(createEditor()))),
 
   //FOR RENDERING CUSTOM BLOCKS
   const DefaultElement = props => {
@@ -170,26 +171,31 @@ const TextEditor = () => {
         renderLeaf={renderLeaf}
         onKeyDown={event => {
           console.log(event)
+          event.preventDefault()
+
           let commandKey = event.ctrlKey || event.metaKey ? true : false
           console.log(commandKey + " pressed " + event.key)
-          if (!commandKey) {
-            return
-          }
+          // if (!commandKey) {
+          //   return
+          // }
 
           // Replace the `onKeyDown` logic with our new commands.
-          switch (event.key) {
-            case '`': {
-              event.preventDefault()
-              CustomEditor.toggleCodeBlock(editor)
-              break
-            }
+          if(commandKey){
+            switch (event.key) {
+              case '`': {
+                event.preventDefault()
+                CustomEditor.toggleCodeBlock(editor)
+                break
+              }
 
-            case 'b': {
-              event.preventDefault()
-              CustomEditor.toggleBoldMark(editor)
-              break
+              case 'b': {
+                event.preventDefault()
+                CustomEditor.toggleBoldMark(editor)
+                break
+              }
             }
           }
+
         }}
       />
     </Slate>

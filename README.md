@@ -2,7 +2,8 @@
 
 In this project:
 
-- Slate.js for a rich text editor
+- [Slate.js](https://github.com/ianstormtaylor/slate) for a rich text editor
+- [Slate Docs](https://docs.slatejs.org/)
 
 ## Features
 
@@ -23,3 +24,5 @@ In this project:
     - Added bold formatting
     - Links
   - [x] UNDO / REDO
+  - [ ] Enforced layout (title and content)
+  - [ ] Emojis
